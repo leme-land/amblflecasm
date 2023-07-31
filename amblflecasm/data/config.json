@@ -1,0 +1,43 @@
+{
+	"tokens": [
+		{
+			"bot": ""
+		},
+
+		{
+			"proxycheck": ""
+		},
+
+		{
+			"steam": ""
+		},
+
+		{
+			"openai": ""
+		},
+
+		{
+			"ocr": ""
+		},
+
+		{
+			"libbys": ""
+		}
+	],
+
+	"users": [
+		
+	],
+
+	"ips": [
+		
+	],
+
+	"roles": [
+		
+	],
+
+	"webhooks": [
+		
+	]
+}
