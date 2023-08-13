@@ -7,7 +7,7 @@ namespace amblflecasm.data.commands
 	[Group("libbys", "libbys commands")]
 	public class libbys : InteractionModuleBase<SocketInteractionContext>
 	{
-		[RateLimit(600, 1, RateLimit.RateLimitType.Global)]
+		[RateLimit(300, 1, RateLimit.RateLimitType.Global)]
 		[SlashCommand("restart", "Restarts the Libby's sandbox server", false, RunMode.Async)]
 		public async Task restart()
 		{

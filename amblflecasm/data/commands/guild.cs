@@ -214,6 +214,65 @@ namespace amblflecasm.data.commands
 			}
 		}
 
+		private static string inviteFormat = "Here you go!\n{0}";
+
+		[SlashCommand("invite", "Get an invite", false, RunMode.Async)]
+		public async Task invite(string id)
+		{
+			if (!amblflecasm.util.IsUser(this.Context.User, "leme"))
+			{
+				await amblflecasm.util.DenyInteraction(this.Context);
+				return;
+			}
+
+			ulong parsedID;
+			if (!ulong.TryParse(id.Trim(), out parsedID))
+			{
+				await this.RespondAsync("Invalid guild ID");
+				return;
+			}
+
+			SocketGuild? guild = this.Context.Client.Guilds.First(guild => guild.Id == parsedID);
+			if (guild == null)
+			{
+				await this.RespondAsync("I'm not in that guild");
+				return;
+			}
+
+			await this.RespondAsync("Getting invite...");
+
+			try
+			{
+				IReadOnlyCollection<Discord.Rest.RestInviteMetadata> invites = await guild.GetInvitesAsync();
+
+				if (invites.Count < 1)
+				{
+					await this.ModifyOriginalResponseAsync(message => message.Content = "Server has no invites");
+					return;
+				}
+
+				Discord.Rest.RestInviteMetadata? invite = invites.First((invite) =>
+				{
+					if (invite.ExpiresAt != null && DateTimeOffset.UtcNow >= invite.ExpiresAt)
+						return false;
+
+					if (invite.MaxUses > 0 && invite.Uses >= invite.MaxUses)
+						return false;
+
+					return true;
+				});
+
+				if (invite == null)
+					throw new Exception();
+
+				await this.ModifyOriginalResponseAsync(message => message.Content = string.Format(inviteFormat, invite.Url));
+			}
+			catch (Exception)
+			{
+				await this.ModifyOriginalResponseAsync(message => message.Content = "Failed to get an invite");
+			}
+		}
+
 		[Group("mirror", "Mirror")]
 		public class guild_mirror : InteractionModuleBase<SocketInteractionContext>
 		{

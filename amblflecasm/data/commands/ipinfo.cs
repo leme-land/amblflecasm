@@ -7,6 +7,7 @@ namespace amblflecasm.data.commands
 	{
 		private static string urlFormatString = "https://proxycheck.io/v2/{0}?vpn=1&asn=1"; // Not actually IP info >:)
 
+		[RateLimit(10)]
 		[SlashCommand("ipinfo", "IP info lookup", false, RunMode.Async)]
 		public async Task run(string ipAddress)
 		{
